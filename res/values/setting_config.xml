@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- 缺省的服务器配置 --> 
+    <string name="default_xmpp_host_name">www.dexun-fuda.com</string>
+    <integer name="default_xmpp_host_port">5222</integer> 
+    <string name="default_xmpp_service_name">room</string>
+   
+</resources>
