@@ -33,6 +33,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Registration;
+import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
@@ -73,7 +74,9 @@ import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 import org.jivesoftware.smackx.search.UserSearchManager;
 
-import com.bancent.common.RetCode.RegistCode;
+import com.bancent.common.RetCode;
+import com.bancent.common.RetCode.LoginResult;
+import com.bancent.common.RetCode.RegistResult;
 import com.bancent.common.TraceLog;
 import com.bancent.common.Utils;
 import com.bancent.common.XMPPConfig;
@@ -188,7 +191,7 @@ public class XMPPManager
      *  
      * @return 
      */ 
-    public boolean login()
+    public int login()
     {
         String name = mXmppCfg.GetLoginName();
         String pwd = mXmppCfg.GetLoginPWD();
@@ -204,12 +207,14 @@ public class XMPPManager
      *            登录密码 
      * @return 
      */ 
-    public boolean login(String account, String password)
+    public int login(String account, String password)
     {  
+        int ret = RetCode.RC_FAILED;
         try
         {  
             if (mConnection == null)  
-                return false;  
+                return ret;  
+            
             mConnection.login(account, password);  
             // 更改在綫狀態  
             Presence presence = new Presence(Presence.Type.available);  
@@ -217,13 +222,40 @@ public class XMPPManager
             // 添加連接監聽  
 //            connectionListener = new TaxiConnectionListener();  
 //            mConnection.addConnectionListener(connectionListener);  
-            return true;  
+            ret = RetCode.RC_OK;
+            return ret;  
         }
-        catch (XMPPException xe)
+        catch (Exception e)
         {  
-            xe.printStackTrace();  
+            TraceLog.Print_E("XMPPManager: login failed.");
+            e.printStackTrace();
+            ret = RetCode.RC_FAILED;
+            
+            if (e instanceof XMPPException)
+            {
+                XMPPException xe = (XMPPException) e;
+                final XMPPError error = xe.getXMPPError();
+                
+                if (error != null)
+                {
+                    int errorCode = error.getCode();
+
+                    if (errorCode == 401)
+                    {
+                        ret = LoginResult.RET_ERROR_ACCOUNT_PWD;
+                    }
+                    else if (errorCode == 403)
+                    {
+                        ret = LoginResult.RET_ERROR_ACCOUNT_PWD;
+                    } 
+                    else
+                    {
+                        ret = LoginResult.RET_ERROR_SERVER_NR;
+                    }
+                }
+            }
         }  
-        return false;  
+        return ret;  
     }  
    
     /** 
@@ -241,7 +273,7 @@ public class XMPPManager
     public int RegistUser(String account, String password)
     {  
         if (mConnection == null)  
-            return RegistCode.RET_NO_RESPONSE;  
+            return RetCode.RC_FAILED;  
         
         Registration reg = new Registration();  
         reg.setType(IQ.Type.SET);  
@@ -265,12 +297,12 @@ public class XMPPManager
         if (result == null)
         {  
             TraceLog.Print_E("No response from server.");  
-            return RegistCode.RET_NO_RESPONSE;  
+            return RegistResult.RET_ERROR_SERVER_NR;  
         }
         else if (result.getType() == IQ.Type.RESULT)
         {  
             TraceLog.Print_D("regist success.");  
-            return RegistCode.RET_SUCCESS;  
+            return RetCode.RC_OK;  
         }
         else
         { // if (result.getType() == IQ.Type.ERROR)  
@@ -278,13 +310,13 @@ public class XMPPManager
             {  
                 TraceLog.Print_E("IQ.Type.ERROR: " 
                         + result.getError().toString());  
-                return RegistCode.RET_EXIST;  
+                return RegistResult.RET_ERROR_ACCOUNT_EXIST;  
             }
             else
             {  
                 TraceLog.Print_E("IQ.Type.ERROR: " 
                         + result.getError().toString());  
-                return RegistCode.RET_UNKNOWN;  
+                return RetCode.RC_FAILED;  
             }  
         }  
     }  

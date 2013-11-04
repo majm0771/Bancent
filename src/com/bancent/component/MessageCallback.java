@@ -1,4 +1,4 @@
-package com.bancent.extend;
+package com.bancent.component;
 
 import android.os.Handler.Callback;
 import android.os.Message;

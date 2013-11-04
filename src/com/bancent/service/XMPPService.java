@@ -1,17 +1,18 @@
 package com.bancent.service;
 
-import org.jivesoftware.smack.XMPPConnection;
-
 import com.bancent.GlobalApplication;
-import com.bancent.common.MessageDeclare;
+import com.bancent.common.Constant.XMPPType;
 import com.bancent.common.TraceLog;
 import com.bancent.common.XMPPConfig;
-import com.bancent.extend.ISupport;
+import com.bancent.component.ISupport;
+import com.bancent.component.IXMPPCallback;
 import com.bancent.manager.XMPPManager;
+import com.bancent.task.LoginTask;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -22,7 +23,19 @@ public class XMPPService extends Service implements ISupport
     private XmppSvcBinder binder = new XmppSvcBinder();
     private Handler mUIHandler = null;
     private XMPPManager mXmppManager = null;
-    private XMPPConnection mConnection = null;
+    private ServiceCallback mCallback = new ServiceCallback();
+    
+    private class ServiceCallback implements IXMPPCallback
+    {
+
+        @Override
+        public void onResult(int type, Bundle data)
+        {
+            Message m = mUIHandler.obtainMessage(type);
+            m.setData(data);
+            m.sendToTarget();
+        }
+    }
     
     @Override
     public void onCreate()
@@ -68,14 +81,14 @@ public class XMPPService extends Service implements ISupport
     
     public void XmppLogin(XMPPConfig config)
     {
-        PublishStatusToUI(MessageDeclare.Login.MSG_LOGIN_START);
-        LoginpProcedure(config);
+        mXmppManager.InitBeforeLogin(config);
+        LoginpProcedure();
     }
     
-    private void LoginpProcedure(XMPPConfig config)
+    private void LoginpProcedure()
     {
-        mXmppManager.InitBeforeLogin(config);
-        mConnection = mXmppManager.GetConnection();
+        LoginTask task = new LoginTask(mXmppManager, mCallback);
+        task.execute(XMPPType.OP_LOGIN);
     }
 
     private void PublishStatusToUI(int what)

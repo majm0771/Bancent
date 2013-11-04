@@ -4,21 +4,19 @@ public class RetCode
 {
     // common return code
     public static final int RC_FAILED = -1;
-    public static final int RC_OK = RC_FAILED + 1;
+    public static final int RC_OK = 0;
     
     //login
-    public class LoginCode
+    public class LoginResult
     {
-        public static final int RET_UNKNOWN = -1;
-        public static final int RET_SUCCESS = 0x0100;
+        public static final int RET_ERROR_SERVER_NR = 1;
+        public static final int RET_ERROR_ACCOUNT_PWD = 2;
     }
     
     //regist
-    public class RegistCode
+    public class RegistResult
     {
-        public static final int RET_UNKNOWN = -1;
-        public static final int RET_SUCCESS = 0x0200;
-        public static final int RET_NO_RESPONSE = 0x0201;
-        public static final int RET_EXIST = 0x0202;
+        public static final int RET_ERROR_SERVER_NR = 1;
+        public static final int RET_ERROR_ACCOUNT_EXIST = 2;
     }
 }

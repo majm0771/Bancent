@@ -43,7 +43,7 @@ public class TraceLog
 
     public static void Print_I(String msg)
     {        
-        if (Profile.EnableLog)
+        if (SettingProfile.EnableLog)
         {
             mLogger.AddTraceLog(LogType.Type_Info, GetPrefix() + msg);
         }
@@ -51,7 +51,7 @@ public class TraceLog
 
     public static void Print_D(String msg)
     {
-        if (Profile.EnableLog)
+        if (SettingProfile.EnableLog)
         {
             mLogger.AddTraceLog(LogType.Type_Debug, GetPrefix() + msg);
         }
@@ -59,7 +59,7 @@ public class TraceLog
     
     public static void Print_W(String msg)
     {
-        if (Profile.EnableLog)
+        if (SettingProfile.EnableLog)
         {
             mLogger.AddTraceLog(LogType.Type_Warning, GetPrefix() + msg);
         }
@@ -67,7 +67,7 @@ public class TraceLog
     
     public static void Print_E(String msg)
     {
-        if (Profile.EnableLog)
+        if (SettingProfile.EnableLog)
         {
             mLogger.AddTraceLog(LogType.Type_Error, GetPrefix() + msg);
         }
@@ -75,7 +75,7 @@ public class TraceLog
 
     public static void Print_P(String msg)
     {
-        if (Profile.EnableLog)
+        if (SettingProfile.EnableLog)
         {
             mLogger.AddTraceLog(LogType.Type_Debug, GetPrefix() + GetPrefix() + msg + " -- " + System.currentTimeMillis());
         }

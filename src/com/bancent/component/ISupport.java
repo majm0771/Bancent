@@ -1,4 +1,4 @@
-package com.bancent.extend;
+package com.bancent.component;
 
 import com.bancent.GlobalApplication;
 

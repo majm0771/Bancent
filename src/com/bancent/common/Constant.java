@@ -6,12 +6,32 @@ public class Constant
      * application common define
      */
     public static final String TAG             = "Bancent";
+    public static final String RESULT             = "result_code";
 
     /*
      * preference define
      */
     public static final String LOGIN_PREF      = "login";
+    
+    /*
+     * xmpp operation type
+     */
+    public class XMPPType
+    {
+        public static final int OP_LOGIN = 0x2000;
+        public static final int OP_REGISTER = 0x2001;
+    }
 
+    /*
+     * keySet
+     */
+    public class LoginKeySet
+    {
+        public static final String KEY_HOST_NAME = "host_NAME";
+        public static final String KEY_HOST_PORT = "host_port";
+        public static final String KEY_SERVICE_NAME = "service_name";
+    }
+    
     /*
      * Log define
      */

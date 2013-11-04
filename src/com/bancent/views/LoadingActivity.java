@@ -3,11 +3,11 @@ package com.bancent.views;
 import com.bancent.GlobalApplication;
 import com.bancent.R;
 import com.bancent.common.Constant;
+import com.bancent.common.Constant.LoginKeySet;
 import com.bancent.common.TraceLog;
 import com.bancent.common.XMPPConfig;
-import com.bancent.common.Profile.LoginKeySet;
-import com.bancent.extend.ISupport;
-import com.bancent.extend.MessageCallback;
+import com.bancent.component.ISupport;
+import com.bancent.component.MessageCallback;
 import com.bancent.service.XMPPService;
 import com.bancent.service.XMPPService.XmppSvcBinder;
 

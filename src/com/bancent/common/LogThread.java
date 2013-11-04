@@ -98,7 +98,7 @@ public class LogThread extends Thread
 
     private void Log2File(String msg)
     {
-        if (!Profile.EnableLog2File)
+        if (!SettingProfile.EnableLog2File)
         {
             return;
         }
