@@ -21,14 +21,20 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 public class LoadingActivity extends BaseView implements OnClickListener, ISupport
 {
     private GlobalApplication mApp = null;
+    
+    //controls
     private FrameLayout mHeader = null;
     private Button mRegisterButton = null;
     private Button mLoginButton = null;
+    private EditText mNameInput = null;
+    private EditText mPWDInput = null;
+    
     private Handler mHandler = new Handler(new LoginProcesser());
     private XMPPService mService = null;
     private XMPPConfig mLoginConfig = null;
@@ -89,6 +95,9 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
         mHeader = (FrameLayout) findViewById(R.id.view_header);
         mRegisterButton = (Button) findViewById(R.id.btn_register);
         mLoginButton = (Button) findViewById(R.id.btn_login);
+        mNameInput = (EditText) findViewById(R.id.et_id);
+        mPWDInput = (EditText) findViewById(R.id.et_pwd);
+        
         
         if (mHeader != null)
         {
@@ -103,6 +112,16 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
         if (mLoginButton != null)
         {
             mLoginButton.setOnClickListener(this);
+        }
+        
+        if (mNameInput != null)
+        {
+            mNameInput.setText("james");
+        }
+        
+        if (mNameInput != null)
+        {
+            mPWDInput.setText("123456");
         }
         return true;
     }
@@ -132,6 +151,8 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
         mLoginConfig.SetServiceName(
                 mPreferences.getString(LoginKeySet.KEY_SERVICE_NAME, 
                         getResources().getString(R.string.default_xmpp_service_name)));
+        mLoginConfig.SetLoginName(mNameInput.getText().toString());
+        mLoginConfig.SetLoginPWD(mPWDInput.getText().toString());
     }
     
     @Override

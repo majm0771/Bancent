@@ -1,5 +1,7 @@
 package com.bancent.service;
 
+import org.jivesoftware.smack.XMPPConnection;
+
 import com.bancent.GlobalApplication;
 import com.bancent.common.MessageDeclare;
 import com.bancent.common.TraceLog;
@@ -16,16 +18,18 @@ import android.os.Message;
 
 public class XMPPService extends Service implements ISupport
 {
+    private GlobalApplication mApp = null;
     private XmppSvcBinder binder = new XmppSvcBinder();
     private Handler mUIHandler = null;
     private XMPPManager mXmppManager = null;
+    private XMPPConnection mConnection = null;
     
     @Override
     public void onCreate()
     {
         // TODO Auto-generated method stub
         super.onCreate();
-        mXmppManager = 
+        mXmppManager = mApp.GetXMPPManager();
     }
     
     @Override
@@ -70,7 +74,8 @@ public class XMPPService extends Service implements ISupport
     
     private void LoginpProcedure(XMPPConfig config)
     {
-        
+        mXmppManager.InitBeforeLogin(config);
+        mConnection = mXmppManager.GetConnection();
     }
 
     private void PublishStatusToUI(int what)
@@ -93,8 +98,11 @@ public class XMPPService extends Service implements ISupport
     @Override
     public GlobalApplication GetGlobalApplication()
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (mApp == null)
+        {
+            mApp = (GlobalApplication)getApplication();
+        }
+        return mApp;
     }
 
     @Override

@@ -67,6 +67,11 @@ public class GlobalApplication extends Application
         return mNetworkManager;
     }
     
+    public XMPPManager GetXMPPManager()
+    {
+        return mXmppManager;
+    }
+    
     private void InitServices()
     {
         Intent intent = new Intent();
