@@ -28,6 +28,7 @@ public class Utils
         catch (UnknownHostException e) 
         {
             e.printStackTrace();
+            return null;
         }
         return address.getHostAddress().toString();
     }

@@ -74,6 +74,7 @@ import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 import org.jivesoftware.smackx.search.UserSearchManager;
 
+import com.bancent.R;
 import com.bancent.common.RetCode;
 import com.bancent.common.RetCode.LoginResult;
 import com.bancent.common.RetCode.RegistResult;
@@ -86,7 +87,6 @@ import android.graphics.drawable.Drawable;
 
 public class XMPPManager
 {
-    @SuppressWarnings("unused")
     private Context mContext = null;
     private static XMPPManager mInstance = null;
     private ConnectionConfiguration mConfig = null;
@@ -115,8 +115,16 @@ public class XMPPManager
         mXmppCfg = cfg;
         if (mConfig == null)
         {
-            String host_ip = Utils.GetIPFromHost(cfg.GetHostIP());
+//            String host_ip = Utils.GetIPFromHost(cfg.GetHostIP());
+            String host_ip = mContext.getResources().getString(R.string.default_xmpp_host_name);
             TraceLog.Print_I("InitBeforeLogin: host: " + host_ip);
+            
+            if (host_ip == null)
+            {
+                //notify to ui
+                return;
+            }
+            
             mConfig = new ConnectionConfiguration(host_ip, cfg.GetHostPort(), cfg.GetServiceName());
             mConfig.setSASLAuthenticationEnabled(false);// 不使用SASL验证，设置为false
             mConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.enabled);
@@ -127,6 +135,7 @@ public class XMPPManager
             // 收到好友邀请后manual表示需要经过同意,accept_all表示不经同意自动为好友
             Roster.setDefaultSubscriptionMode(Roster.SubscriptionMode.manual);
         }
+        
         if (mConnection == null)
         {
             mConnection = new XMPPConnection(mConfig);
@@ -214,6 +223,11 @@ public class XMPPManager
         {  
             if (mConnection == null)  
                 return ret;  
+            
+            if (!mConnection.isConnected())
+            {
+                OpenConnection();
+            }
             
             mConnection.login(account, password);  
             // 更改在綫狀態  

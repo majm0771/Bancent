@@ -11,10 +11,10 @@ public abstract class BaseView extends Activity
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         DoRestore(savedInstanceState);
-        
+
+        SetViewLayout();
         InitParam();
         InitControls();
-        SetViewLayout();
     }
     
     @Override

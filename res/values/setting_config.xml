@@ -2,7 +2,7 @@
 <resources>
     
     <!-- 缺省的服务器配置 --> 
-    <string name="default_xmpp_host_name">www.dexun-fuda.com</string>
+    <string name="default_xmpp_host_name">58.214.8.250</string>
     <integer name="default_xmpp_host_port">5222</integer> 
     <string name="default_xmpp_service_name">room</string>
    

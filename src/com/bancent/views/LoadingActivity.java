@@ -63,7 +63,7 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
             }
             catch (Exception e)
             {
-                TraceLog.Print_E("LoadingActivity: service login error.");
+                TraceLog.Print_E("service login error.");
                 e.printStackTrace();
             }
         }
@@ -85,7 +85,6 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
             mLoginConfig = new XMPPConfig();
         }
         
-        InitLoginConfig();
         return true;
     }
 
@@ -101,7 +100,7 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
         
         if (mHeader != null)
         {
-            mHeader.setVisibility(View.GONE);
+            mHeader.setVisibility(View.VISIBLE);
         }
         
         if (mRegisterButton != null)
@@ -182,6 +181,8 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
     
     private void DoLogin()
     {
+        InitLoginConfig();
+        
         Intent i = new Intent();
         i.setClass(this, XMPPService.class);
         bindService(i, mConnection, BIND_AUTO_CREATE);
@@ -191,11 +192,12 @@ public class LoadingActivity extends BaseView implements OnClickListener, ISuppo
     public GlobalApplication GetGlobalApplication()
     {
         // TODO Auto-generated method stub
-        if (mApp == null)
-        {
-            mApp = (GlobalApplication) getApplication();
-        }
-        return mApp;
+//        if (mApp == null)
+//        {
+//            mApp = (GlobalApplication) getApplication();
+//        }
+//        return mApp;
+        return (GlobalApplication) getApplication();
     }
 
     @Override

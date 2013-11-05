@@ -26,8 +26,6 @@ public class LoginTask extends AsyncTask<Integer, Integer, Integer>
     @Override
     protected Integer doInBackground(Integer... arg0)
     {
-        int ret = RetCode.RC_FAILED;
-        
         switch (arg0[0])
         {
             case XMPPType.OP_LOGIN:
@@ -40,7 +38,7 @@ public class LoginTask extends AsyncTask<Integer, Integer, Integer>
             default:
                 break;
         }
-        return ret;
+        return arg0[0];
     }
     
     @Override
@@ -52,7 +50,7 @@ public class LoginTask extends AsyncTask<Integer, Integer, Integer>
             return;
         }
         
-        mCallback.onResult(values[0], null);
+        mCallback.onResult(values[0], mResultSet);
     }
 
     @Override

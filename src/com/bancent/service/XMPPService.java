@@ -42,6 +42,7 @@ public class XMPPService extends Service implements ISupport
     {
         // TODO Auto-generated method stub
         super.onCreate();
+        mApp = GetGlobalApplication();
         mXmppManager = mApp.GetXMPPManager();
     }
     
@@ -111,11 +112,12 @@ public class XMPPService extends Service implements ISupport
     @Override
     public GlobalApplication GetGlobalApplication()
     {
-        if (mApp == null)
-        {
-            mApp = (GlobalApplication)getApplication();
-        }
-        return mApp;
+//        if (mApp == null)
+//        {
+//            mApp = (GlobalApplication)getApplication();
+//        }
+//        return mApp;
+        return (GlobalApplication)getApplication();
     }
 
     @Override

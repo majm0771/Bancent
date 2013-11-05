@@ -27,6 +27,7 @@ public class GlobalApplication extends Application
     {
         super.onCreate();
         
+        TraceLog.Init(getApplicationContext());
         InitManagers();
         InitServices();
     }
